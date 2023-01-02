@@ -8,11 +8,11 @@ class AppButton extends StatelessWidget {
   final double width;
   const AppButton(
       {super.key,
-      this.buttonColor = Colors.red,
+      this.buttonColor = Colors.blue,
       this.onPressed,
       this.height = 50,
       this.width = 100,
-      this.label = "Click Me"});
+      this.label = "Login"});
 
   @override
   Widget build(BuildContext context) {
