@@ -1,3 +1,4 @@
+import 'package:final_year_project/controllers/authentication_contorler.dart';
 import 'package:final_year_project/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import 'package:final_year_project/components/app_button.dart';
 class LoginPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final loginController = Get.put(AuthenticationController());
+  LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +41,18 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          AppButton(
-            width: Get.width,
-            onPressed: () {
-              var data = {
-                'email': emailController.text,
-                'password': passwordController.text
-              };
-            },
-          ),
+          Obx(() => Container(
+                child: loginController.loading.value
+                    ? const CircularProgressIndicator()
+                    : AppButton(
+                        width: Get.width,
+                        onPressed: () {
+                          loginController.login(
+                              email: emailController.text,
+                              password: passwordController.text);
+                        },
+                      ),
+              )),
           const SizedBox(
             height: 20,
           ),
@@ -56,7 +62,7 @@ class LoginPage extends StatelessWidget {
           ),
           InkWell(
               onTap: () {
-                Get.to(SignUp());
+                Get.to(RegisterPage());
               },
               child: const Text("Sign Up")),
         ]),

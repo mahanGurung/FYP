@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:final_year_project/components/app_button.dart';
 
-class SignUp extends StatelessWidget {
+import '../controllers/authentication_contorler.dart';
+
+class RegisterPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final loginController = Get.find<AuthenticationController>();
+  RegisterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +43,19 @@ class SignUp extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          AppButton(
-            label: "Register",
-            width: Get.width,
-            onPressed: () {},
-          ),
+          Obx(() => Container(
+                child: loginController.loading.value
+                    ? const CircularProgressIndicator()
+                    : AppButton(
+                        label: "Register",
+                        width: Get.width,
+                        onPressed: () {
+                          loginController.register(
+                              email: emailController.text,
+                              password: passwordController.text);
+                        },
+                      ),
+              )),
           const SizedBox(
             height: 20,
           ),
