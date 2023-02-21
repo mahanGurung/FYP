@@ -11,17 +11,16 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.amber,
         title: const Text("Merchant Home"),
       ),
-      body: Wrap(
-        children: [
-          Cardbutton(
-            onTap: () {},
-            lable: "Add Category",
-          ),
-          Cardbutton(
-            onTap: () {},
-            lable: "Add Product",
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Cardbutton(
+              onTap: () {},
+              lable: "Add Doctor",
+            ),
+          ],
+        ),
       ),
     );
   }

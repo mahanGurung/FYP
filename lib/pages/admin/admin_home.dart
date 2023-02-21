@@ -51,7 +51,7 @@ class _AdminHomeState extends State<AdminHome> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.feedback),
-              label: 'Report',
+              label: 'Merchant',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
