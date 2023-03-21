@@ -23,7 +23,7 @@ class _MerchantHomeState extends State<MerchantHome> {
 
   final _map = <AppTab, TabBuilder>{
     AppTab.report: () {
-      return Booking();
+      return const Booking();
     },
     AppTab.home: () {
       return const Home();
