@@ -1,3 +1,4 @@
+import 'package:final_year_project/pages/admin/category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:final_year_project/components/card_button.dart';
@@ -15,6 +16,12 @@ class Home extends StatelessWidget {
       ),
       body: Wrap(
         children: [
+          Cardbutton(
+            onTap: () {
+              Get.bottomSheet(const CategoryPage());
+            },
+            lable: "Add Category",
+          ),
           Cardbutton(
             lable: "Add Merchant",
             onTap: () {

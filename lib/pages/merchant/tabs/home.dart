@@ -16,12 +16,12 @@ class Home extends StatelessWidget {
       ),
       body: Wrap(
         children: [
-          Cardbutton(
-            onTap: () {
-              Get.bottomSheet(const CategoryPage());
-            },
-            lable: "Add Category",
-          ),
+          // Cardbutton(
+          //   onTap: () {
+          //     Get.bottomSheet(const CategoryPage());
+          //   },
+          //   lable: "Add Category",
+          // ),
           // Cardbutton(
           //   onTap: () {
           //     Get.bottomSheet(const ProductPage());
