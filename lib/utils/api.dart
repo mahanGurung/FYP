@@ -1,4 +1,6 @@
-const baseUrl = "http://192.168.1.109/backend/";
+import 'package:final_year_project/models/category.dart';
+
+const baseUrl = "http://192.168.1.79/backend/";
 
 const SIGNUPAPI = '${baseUrl}signup.php';
 const LOGINAPI = '${baseUrl}login.php';
@@ -10,3 +12,5 @@ const ADD_DOCTOR = '${baseUrl}addDoctors.php';
 const CATEGORYGETAPI = '${baseUrl}getCategories.php';
 const GETMERCHANTAPI = '${baseUrl}getMerchant.php';
 const ADD_CATEGORY = '${baseUrl}addCategory.php';
+const EDITCATEGORYAPI = '${baseUrl}editCategory.php';
+const CATEGORIESGETAPI = '${baseUrl}getCategory.php';

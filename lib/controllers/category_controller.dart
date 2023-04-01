@@ -42,10 +42,85 @@ class CategoryController extends GetxController {
     }
   }
 
+  // editName({data}) async {
+  //   var token = await authService.getToken();
+  //   data["token"] = token;
+  //   isLoading.value = true;
+  //   var request = http.MultipartRequest('POST', Uri.parse(EDITCATEGORYAPI));
+  //   request.fields.addAll(data);
+
+  //   var response = await request.send();
+  //   isLoading.value = false;
+  //   var result = await response.stream.bytesToString();
+  //   var decodedData = jsonDecode(result);
+  //   var success = decodedData['success'];
+  //   var message = decodedData['message'];
+
+  //   if (success) {
+  //     Get.back();
+  //     Get.snackbar("Success", message,
+  //         colorText: Colors.white, backgroundColor: Colors.green);
+  //     await get();
+  //   } else {
+  //     Get.snackbar("Error", message,
+  //         colorText: Colors.white, backgroundColor: Colors.red);
+  //   }
+  // }
+
+  edit({data, required File image}) async {
+    var token = await authService.getToken();
+    data["token"] = token;
+    isLoading.value = true;
+    var request = http.MultipartRequest('POST', Uri.parse(EDITCATEGORYAPI));
+    request.fields.addAll(data);
+    request.files.add(await http.MultipartFile.fromPath('image', image.path));
+    var response = await request.send();
+    isLoading.value = false;
+    var result = await response.stream.bytesToString();
+    var decodedData = jsonDecode(result);
+    var success = decodedData['success'];
+    var message = decodedData['message'];
+
+    if (success) {
+      Get.back();
+      Get.snackbar("Success", message,
+          colorText: Colors.white, backgroundColor: Colors.green);
+      await get();
+    } else {
+      Get.snackbar("Error", message,
+          colorText: Colors.white, backgroundColor: Colors.red);
+    }
+  }
+
+  // editPhoto({data, required File image}) async {
+  //   var token = await authService.getToken();
+  //   data["token"] = token;
+  //   isLoading.value = true;
+  //   var request = http.MultipartRequest('POST', Uri.parse(EDITCATEGORYAPI));
+  //   request.fields.addAll(data);
+  //   request.files.add(await http.MultipartFile.fromPath('image', image.path));
+  //   var response = await request.send();
+  //   isLoading.value = false;
+  //   var result = await response.stream.bytesToString();
+  //   var decodedData = jsonDecode(result);
+  //   var success = decodedData['success'];
+  //   var message = decodedData['message'];
+
+  //   if (success) {
+  //     Get.back();
+  //     Get.snackbar("Success", message,
+  //         colorText: Colors.white, backgroundColor: Colors.green);
+  //     await get();
+  //   } else {
+  //     Get.snackbar("Error", message,
+  //         colorText: Colors.white, backgroundColor: Colors.red);
+  //   }
+  // }
+
   Future get() async {
     isLoading.value = true;
     var response = await http.get(
-      Uri.parse(CATEGORYGETAPI),
+      Uri.parse(CATEGORIESGETAPI),
     );
     isLoading.value = false;
     var decodedResponse = await jsonDecode(response.body);

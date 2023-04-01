@@ -26,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height / 2,
+      height: 350,
       color: Colors.white,
       child: Form(
         key: _formKey,
