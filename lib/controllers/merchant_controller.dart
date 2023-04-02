@@ -49,6 +49,7 @@ class MerchantController extends GetxController {
 
       Get.snackbar("Success", decodedResponse["message"],
           backgroundColor: Colors.white);
+      update(['merchants']);
     } else {
       Get.snackbar("Failed", decodedResponse["message"],
           backgroundColor: Colors.white);

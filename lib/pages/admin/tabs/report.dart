@@ -16,13 +16,16 @@ class Report extends StatelessWidget {
         title: const Text("Merchants"),
       ),
       body: SingleChildScrollView(
-        child: Wrap(
-          children: merchantController.merchantsList
-              .map((Merchant merchant) => Cardbutton(
-                    onTap: () {},
-                    lable: merchant.username,
-                  ))
-              .toList(),
+        child: GetBuilder<MerchantController>(
+          id: 'merchants',
+          builder: (controller) => Wrap(
+            children: merchantController.merchantsList
+                .map((Merchant merchant) => Cardbutton(
+                      onTap: () {},
+                      lable: merchant.username,
+                    ))
+                .toList(),
+          ),
         ),
       ),
     );
