@@ -1,3 +1,4 @@
+import 'package:final_year_project/pages/merchant/booking_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:final_year_project/components/card_button.dart';
@@ -31,6 +32,12 @@ class Home extends StatelessWidget {
           Cardbutton(
             onTap: () {
               Get.bottomSheet(DoctorPage());
+            },
+            lable: "Add Doctor",
+          ),
+          Cardbutton(
+            onTap: () {
+              Get.bottomSheet(BookingPage());
             },
             lable: "Add Doctor",
           )
