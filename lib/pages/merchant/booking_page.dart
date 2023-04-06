@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 // import 'package:flutter/foundation.dart';
+import 'package:final_year_project/controllers/booking_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,14 +25,14 @@ class BookingPage extends StatefulWidget {
 class _DoctorPageState extends State<BookingPage> {
   TextEditingController is_daily = TextEditingController();
   TextEditingController show_on_weekends = TextEditingController();
-
+  TextEditingController quantity = TextEditingController();
   TextEditingController merchant = TextEditingController();
 
-  DoctorController doctorController = Get.put(DoctorController());
+  BookingController bookingController = Get.put(BookingController());
 
   final _formKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
-  XFile? image;
+  // final ImagePicker _picker = ImagePicker();
+  // XFile? image;
 
   // List categories = [];
   // String? selectedCategory = "";
@@ -137,7 +138,7 @@ class _DoctorPageState extends State<BookingPage> {
                     width: 400,
                     child: DropdownButton(
                         isExpanded: true,
-                        hint: const Text("Select Category"),
+                        hint: const Text("Select doctor"),
                         value: selectedDoctor,
                         items: selectedItemListed.map((doctor) {
                           return DropdownMenuItem(
@@ -153,8 +154,8 @@ class _DoctorPageState extends State<BookingPage> {
                   TextFormField(
                     controller: is_daily,
                     decoration: const InputDecoration(
-                      hintText: "Enter Doctor Name",
-                      labelText: "Doctor Name",
+                      hintText: "Enter if doctor is available daily",
+                      labelText: "Enter if doctor is available daily",
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
@@ -170,8 +171,8 @@ class _DoctorPageState extends State<BookingPage> {
                   TextFormField(
                     controller: show_on_weekends,
                     decoration: const InputDecoration(
-                      hintText: "Enter Doctor description",
-                      labelText: "Doctor description",
+                      hintText: "Enter if doctor is available in weekends",
+                      labelText: "Enter if doctor is available in weekends",
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
@@ -184,10 +185,26 @@ class _DoctorPageState extends State<BookingPage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-
-                  // const SizedBox(
-                  //   height: 12.0,
-                  // ),
+                  TextFormField(
+                    controller: quantity,
+                    decoration: const InputDecoration(
+                      hintText: "Token quantity",
+                      labelText: "Token quantity",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field cannot be empty";
+                      }
+                      if (value is! int) {
+                        return "Field cannot be alphabetical";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
 
                   SizedBox(
                     height: 100,
@@ -238,47 +255,48 @@ class _DoctorPageState extends State<BookingPage> {
                   //       }),
                   // ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () async {
-                        image = await _picker.pickImage(
-                            source: ImageSource.gallery);
-                        setState(() {});
-                      },
-                      child: SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: image != null
-                            ? Image.file(
-                                File(image!.path),
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: InkWell(
+                  //     onTap: () async {
+                  //       image = await _picker.pickImage(
+                  //           source: ImageSource.gallery);
+                  //       setState(() {});
+                  //     },
+                  //     child: SizedBox(
+                  //       height: 200,
+                  //       width: 200,
+                  //       child: image != null
+                  //           ? Image.file(
+                  //               File(image!.path),
+                  //               fit: BoxFit.cover,
+                  //             )
+                  //           : Image.network(
+                  //               "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
-                    child: doctorController.isLoading.value
+                    child: bookingController.isLoading.value
                         ? const CircularProgressIndicator()
                         : AppButton(
                             label: "Add",
                             onPressed: () {
                               var isValid = _formKey.currentState!.validate();
 
-                              if (image == null) {
-                                errorMessage("File not provided");
-                              }
+                              // if (image == null) {
+                              //   errorMessage("File not provided");
+                              // }
                               if (isValid) {
                                 var data = {
                                   'doctor_id': selectedDoctor!.toString(),
                                   'is_daily': is_daily.text,
                                   'show_on_weekends': show_on_weekends.text,
+                                  'quantity': quantity.toString(),
                                   'merchant_id': selectedMerchant!.toString(),
                                 };
-                                doctorController.submit(
-                                    data: data, image: File(image!.path));
+                                bookingController.submit(data: data);
+                                // , image: File(image!.path)
                               }
                             },
                             width: Get.width,

@@ -8,6 +8,8 @@ import 'package:final_year_project/components/app_button.dart';
 import 'package:final_year_project/controllers/merchant_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/messages.dart';
+
 // class AddMerchant extends StatelessWidget {
 //   TextEditingController usernameController = TextEditingController();
 //   TextEditingController passwordController = TextEditingController();
@@ -88,7 +90,7 @@ import 'package:image_picker/image_picker.dart';
 // }
 
 class AddMerchant extends StatefulWidget {
-  const AddMerchant({super.key});
+  AddMerchant({super.key});
 
   @override
   State<AddMerchant> createState() => _AddMerchantState();
@@ -97,9 +99,12 @@ class AddMerchant extends StatefulWidget {
 class _AddMerchantState extends State<AddMerchant> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final MerchantController merchantController = Get.put(MerchantController());
+  MerchantController merchantController = Get.put(MerchantController());
+
+  final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   XFile? image;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -159,19 +164,26 @@ class _AddMerchantState extends State<AddMerchant> {
                   ),
                 ),
               ),
-              Obx(() => Container(
-                    child: merchantController.loading.value
-                        ? const CircularProgressIndicator()
-                        : AppButton(
-                            onPressed: () {
-                              merchantController.register(
-                                  username: usernameController.text,
-                                  password: passwordController.text);
-                            },
-                            width: Get.width,
-                            label: "Add",
-                          ),
-                  ))
+              Container(
+                child: merchantController.isLoading.value
+                    ? const CircularProgressIndicator()
+                    : AppButton(
+                        onPressed: () {
+                          if (image == null) {
+                            errorMessage("File not provided");
+                          }
+
+                          var data = {
+                            'username': usernameController.text,
+                            'password': passwordController.text,
+                          };
+                          merchantController.submit(
+                              data: data, image: File(image!.path));
+                        },
+                        width: Get.width,
+                        label: "Add",
+                      ),
+              )
             ],
           ),
         ),

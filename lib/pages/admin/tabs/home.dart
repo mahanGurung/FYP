@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
             Cardbutton(
               lable: "Add Merchant",
               onTap: () {
-                Get.bottomSheet(const AddMerchant());
+                Get.bottomSheet(AddMerchant());
               },
             ),
             Cardbutton(

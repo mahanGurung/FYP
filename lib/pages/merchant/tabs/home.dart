@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
             onTap: () {
               Get.bottomSheet(BookingPage());
             },
-            lable: "Add Doctor",
+            lable: "Add booking",
           )
         ],
       ),

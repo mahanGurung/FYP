@@ -4,16 +4,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:final_year_project/models/merchant.dart';
+
 import 'package:final_year_project/utils/api.dart';
 
+import '../models/doctor.dart';
 import '../services/auth_service.dart';
 
-class MerchantController extends GetxController {
+class BookingController extends GetxController {
   AuthService authService = AuthService();
-  var loading = false.obs;
   var isLoading = false.obs;
-  List<Merchant> merchantsList = RxList.empty();
+  List<Doctor> doctorList = RxList.empty();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -21,33 +21,16 @@ class MerchantController extends GetxController {
     get();
   }
 
-  Future<void> register(
-      {required String username,
-      required String password,
-      required File image}) async {
-    var data = {'username': username, 'password': password, 'image': image};
-    loading.value = true;
-    var response = await http.post(Uri.parse(MERCAHNTADDAPI), body: data);
-    loading.value = false;
-    var decodedResponse = await jsonDecode(response.body);
-    if (decodedResponse["success"]) {
-      Get.back();
-      Get.snackbar("Success", decodedResponse["message"],
-          backgroundColor: Colors.white);
-    } else {
-      Get.snackbar("Failed", decodedResponse["message"],
-          backgroundColor: Colors.white);
-    }
-  }
-
-  submit({data, required File image}) async {
+  submit({data}) async {
     var token = await authService.getToken();
     data["token"] = token;
     isLoading.value = true;
-    var request = http.MultipartRequest('POST', Uri.parse(MERCAHNTADDAPI));
+    var request =
+        http.MultipartRequest('POST', Uri.parse(ADD_AVAILABLE_BOOKING));
     request.fields.addAll(data);
-    request.files.add(await http.MultipartFile.fromPath('image', image.path));
+
     var response = await request.send();
+
     isLoading.value = false;
     var result = await response.stream.bytesToString();
     var decodedData = jsonDecode(result);
@@ -65,23 +48,34 @@ class MerchantController extends GetxController {
     }
   }
 
-  Future<void> get() async {
-    loading.value = true;
-    var response = await http.get(
-      Uri.parse(MERCAHNTGETAPI),
-    );
-    loading.value = false;
+  toggle({data}) async {
+    var token = await authService.getToken();
+    data["token"] = token;
+    var response = await http.post(Uri.parse(TOGGLE_DOCTOR), body: data);
+    isLoading.value = false;
     var decodedResponse = await jsonDecode(response.body);
     if (decodedResponse["success"]) {
-      var merchants = await decodedResponse["data"];
-      for (var merchant in merchants) {
-        merchantsList.add(Merchant.fromJson(merchant));
-      }
-      print(merchantsList);
+      Get.snackbar("Success", decodedResponse["message"]);
+    } else {
+      Get.snackbar("Failed", decodedResponse["message"]);
+    }
+  }
 
+  Future<void> get() async {
+    isLoading.value = true;
+    var response = await http.get(
+      Uri.parse(DOCTORGETAPI),
+    );
+    isLoading.value = false;
+    var decodedResponse = await jsonDecode(response.body);
+    if (decodedResponse["success"]) {
+      doctorList.clear();
+      var doctors = await decodedResponse["data"];
+      for (var doctor in doctors) {
+        doctorList.add(Doctor.fromJson(doctor));
+      }
       Get.snackbar("Success", decodedResponse["message"],
           backgroundColor: Colors.white);
-      update(['merchants']);
     } else {
       Get.snackbar("Failed", decodedResponse["message"],
           backgroundColor: Colors.white);
