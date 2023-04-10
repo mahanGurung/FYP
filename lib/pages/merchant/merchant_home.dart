@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:final_year_project/pages/merchant/tabs/doctors.dart';
 import 'package:flutter/material.dart';
 import 'package:tabnavigator/tabnavigator.dart';
 import 'package:final_year_project/pages/merchant/tabs/bookings.dart';
@@ -23,7 +24,7 @@ class _MerchantHomeState extends State<MerchantHome> {
 
   final _map = <AppTab, TabBuilder>{
     AppTab.report: () {
-      return const Booking();
+      return BookingD();
     },
     AppTab.home: () {
       return const Home();

@@ -41,6 +41,10 @@ dependencies:
   shared_preferences: ^2.0.15
   tabnavigator: ^1.0.0
   image_picker: ^0.8.6
+  badges: ^3.0.2
+  toggle_switch: ^2.0.1
+  khalti:
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
