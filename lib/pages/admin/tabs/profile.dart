@@ -1,3 +1,5 @@
+import 'package:final_year_project/controllers/profile_controller.dart';
+import 'package:final_year_project/models/merchant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:final_year_project/components/app_button.dart';
@@ -6,7 +8,8 @@ import 'package:final_year_project/services/auth_service.dart';
 
 class Profile extends StatelessWidget {
   final bool isMerchant;
-  const Profile({super.key, this.isMerchant = false});
+  Profile({super.key, this.isMerchant = false});
+  // final ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +25,16 @@ class Profile extends StatelessWidget {
             Icons.person,
             size: 200,
           )),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text("Name:"),
-              ],
-            ),
-          ),
+          // Center(
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       profileController.profileList
+          //           .map((Merchant profile) => ProfileCard(profile))
+          //           .single
+          //     ],
+          //   ),
+          // ),
           AppButton(
             label: "Logout",
             onPressed: () {
@@ -41,5 +46,20 @@ class Profile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget ProfileCard(Merchant profile) {
+    return Container(
+        height: 450,
+        width: 250,
+        color: Color.fromARGB(255, 221, 187, 187),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Text("Namw ${profile.username}"),
+            ],
+          ),
+        ));
   }
 }
