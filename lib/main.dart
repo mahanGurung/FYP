@@ -15,5 +15,8 @@ Future<void> main() async {
     enabledDebugging: false,
   );
   Get.put(AuthenticationController());
-  runApp(const GetMaterialApp(home: AuthChecker()));
+  runApp(const GetMaterialApp(
+    home: AuthChecker(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
