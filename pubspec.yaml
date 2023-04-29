@@ -45,6 +45,7 @@ dependencies:
   toggle_switch: ^2.0.1
   khalti:
   url_launcher:
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
