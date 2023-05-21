@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:final_year_project/models/booking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,12 @@ import '../services/auth_service.dart';
 class BookingController extends GetxController {
   AuthService authService = AuthService();
   var isLoading = false.obs;
-  List<Doctor> doctorList = RxList.empty();
+  List<Booking> bookingList = RxList.empty();
+  List<Booking> filteredProducts = RxList.empty();
+  List<Booking> filteredMerchant = RxList.empty();
+  List<Booking> merchants = RxList.empty();
+  List<Booking> bookingListMerchant = RxList();
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -24,11 +30,13 @@ class BookingController extends GetxController {
   submit({data}) async {
     var token = await authService.getToken();
     data["token"] = token;
+    var userId = await authService.getUserID();
+    data["merchantId"] = userId;
     isLoading.value = true;
     var request =
         http.MultipartRequest('POST', Uri.parse(ADD_AVAILABLE_BOOKING));
     request.fields.addAll(data);
-
+    print(data);
     var response = await request.send();
 
     isLoading.value = false;
@@ -64,15 +72,15 @@ class BookingController extends GetxController {
   Future<void> get() async {
     isLoading.value = true;
     var response = await http.get(
-      Uri.parse(DOCTORGETAPI),
+      Uri.parse(BOOKINGAPIGET),
     );
     isLoading.value = false;
     var decodedResponse = await jsonDecode(response.body);
     if (decodedResponse["success"]) {
-      doctorList.clear();
+      bookingList.clear();
       var doctors = await decodedResponse["data"];
       for (var doctor in doctors) {
-        doctorList.add(Doctor.fromJson(doctor));
+        bookingList.add(Booking.fromJson(doctor));
       }
       Get.snackbar("Success", decodedResponse["message"],
           backgroundColor: Colors.white);
@@ -80,5 +88,45 @@ class BookingController extends GetxController {
       Get.snackbar("Failed", decodedResponse["message"],
           backgroundColor: Colors.white);
     }
+  }
+
+  // getMerchant() async {
+  //   isLoading.value = true;
+  //   var token = await authService.getToken();
+  //   var data = {"token": token.toString()};
+
+  //   var response = await http.post(Uri.parse(MERCAHNTGETAPI), body: data);
+  //   isLoading.value = false;
+  //   var decodedResponse = await jsonDecode(response.body);
+  //   if (decodedResponse["success"]) {
+  //     merchants = decodedResponse["data"]
+  //         .map<Booking>((e) => Booking.fromJson(e))
+  //         .toList();
+  //     update();
+  //   } else {
+  //     if (decodedResponse["message"] == "Access denied") {
+  //       Get.offAllNamed("/login");
+  //     }
+  //   }
+  // }
+
+  void filterCategory(String category) {
+    filteredProducts.clear();
+    filteredProducts = bookingList
+        .where((element) =>
+            element.doctorCategory!.toLowerCase() == category.toLowerCase())
+        .toList();
+    print(filteredProducts.length);
+    update();
+  }
+
+  void filterMerchant(String merchant) {
+    filteredMerchant.clear();
+    filteredMerchant = bookingList
+        .where((element) =>
+            element.merchantName!.toLowerCase() == merchant.toLowerCase())
+        .toList();
+    print(filteredMerchant.length);
+    update();
   }
 }
